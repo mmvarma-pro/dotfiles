@@ -1,18 +1,8 @@
 # Starship Configuration with Tokyo Night Colors
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = """
-$username\
-$hostname\
-$directory\
-$git_branch\
-$git_status\
-$rust\
-$nodejs\
-$golang\
-$cmd_duration\
-$line_break\
-$character"""
+format = "$character"
+right_format = """$directory$git_branch$git_status$nodejs$rust$golang$cmd_duration"""
 
 add_newline = false
 
@@ -30,8 +20,8 @@ magenta = "#c792ea"
 cyan = "#21c7a8"
 white = "#ffffff"
 [character]
-success_symbol = "[➜](bold green) "
-error_symbol = "[➜](bold red) "
+success_symbol = "[❯](bold green) "
+error_symbol = "[❯](bold red) "
 
 [directory]
 style = "bold cyan"

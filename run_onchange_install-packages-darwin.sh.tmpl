@@ -1,0 +1,10 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "darwin" -}}
+echo "Starting package installation for macOS..."
+if command -v brew >/dev/null 2>&1; then
+  brew install wezterm zsh starship zoxide fzf eza bat git ripgrep fd jq lazygit btop neovim zsh-autosuggestions zsh-syntax-highlighting || true
+else
+  echo "Homebrew not found. Please install Homebrew first."
+  exit 1
+fi
+{{- end }}

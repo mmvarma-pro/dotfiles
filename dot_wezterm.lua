@@ -3,7 +3,7 @@ local config = wezterm.config_builder()
 
 -- Color scheme and aesthetics
 config.color_scheme = 'Night Owl (Gogh)'
-config.font = wezterm.font('JetBrains Mono')
+config.font = wezterm.font('JetBrains Mono Nerd Font')
 config.font_size = 11.0
 config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
@@ -16,6 +16,8 @@ config.window_padding = {
   top = 10,
   bottom = 10,
 }
+config.window_decorations = wezterm.target_triple:find("darwin") and "INTEGRATED_BUTTONS | RESIZE" or "RESIZE"
+config.window_move_via_background = true
 
 -- Shell selection based on OS
 local function get_default_prog()

@@ -1,67 +1,36 @@
-{{- if eq .chezmoi.os "windows" -}}
-# OS Check
-if (-not ($IsWindows -or $env:OS -eq 'Windows_NT')) {
-  exit 0
-}
+#!/bin/sh
+{{ if ne .chezmoi.os "windows" -}}
+exit 0
+{{ end -}}
+# Set ExecutionPolicy to bypass for the session to run commands
+Set-ExecutionPolicy Bypass -Scope Process -Force
 
-Write-Host "Installing packages for Windows..."
-
-# Install Scoop if not already installed
+# Install Scoop if not present
 if (-not (Get-Command scoop -ErrorAction SilentlyContinue)) {
-  Write-Host "Scoop not found. Installing Scoop..."
-  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
-  Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+    Write-Host "Scoop not found, installing..."
+    Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 }
 
-if (Get-Command scoop -ErrorAction SilentlyContinue) {
-  Write-Host "Using Scoop to install packages..."
-  scoop bucket add extras
-  scoop bucket add main
+# Ensure Git is installed first (needed for buckets)
+if (-not (Get-Command git -ErrorAction SilentlyContinue)) {
+    Write-Host "Git not found, installing via Scoop..."
+    scoop install git
+}
 
-  $packages = @(
-    "git",
-    "wezterm",
-    "starship",
-    "zoxide",
-    "fzf",
-    "eza",
-    "bat",
-    "ripgrep",
-    "fd",
-    "jq",
-    "lazygit",
-    "btop",
-    "neovim"
-  )
+# Add extras bucket if not present (needed for wezterm, lazygit, etc.)
+$buckets = scoop bucket list
+if ($buckets -notcontains "extras") {
+    Write-Host "Adding extras bucket..."
+    scoop bucket add extras
+}
 
-  foreach ($pkg in $packages) {
-    if (-not (scoop which $pkg)) {
-      Write-Host "Installing $pkg via Scoop..."
-      scoop install $pkg
+# Install tools
+$apps = @("starship", "zoxide", "fzf", "eza", "bat", "ripgrep", "fd-find", "jq", "lazygit", "btop", "neovim", "wezterm")
+foreach ($app in $apps) {
+    if (-not (Get-Command $app -ErrorAction SilentlyContinue)) {
+        Write-Host "Installing $app..."
+        scoop install $app
     } else {
-      Write-Host "$pkg is already installed."
+        Write-Host "$app is already installed."
     }
-  }
-} else {
-  Write-Host "Warning: Scoop could not be installed. Falling back to Winget..."
-  $wingetPackages = @(
-    "Git.Git",
-    "Wez.WezTerm",
-    "Starship.Starship",
-    "ajeetdsouza.zoxide",
-    "junegunn.fzf",
-    "sharkdp.bat",
-    "BurntSushi.ripgrep",
-    "sharkdp.fd",
-    "jqlang.jq",
-    "JesseDuffield.lazygit",
-    "aristocratos.btop",
-    "Neovim.Neovim"
-  )
-  foreach ($pkg in $wingetPackages) {
-    Write-Host "Installing $pkg via Winget..."
-    winget install --silent --accept-source-agreements --accept-package-agreements $pkg
-  }
-  Write-Host "Please note that 'eza' is not available via Winget. You should install Scoop or download it manually."
 }
-{{- end -}}

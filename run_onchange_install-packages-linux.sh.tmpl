@@ -1,0 +1,82 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "linux" -}}
+echo "Starting package installation for Linux..."
+
+# Try APT (Debian/Ubuntu-based)
+if command -v apt-get >/dev/null 2>&1; then
+  if sudo -n true 2>/dev/null; then
+    echo "Running apt-get update and install..."
+    sudo -n apt-get update -y
+    # Wezterm repository setup if needed
+    if ! command -v wezterm >/dev/null 2>&1; then
+      echo "Setting up WezTerm repository..."
+      curl -fsSL https://apt.fury.io/wezterm/gpg.key | sudo -n gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg 2>/dev/null
+      echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wezterm/ * *' | sudo -n tee /etc/apt/sources.list.d/wezterm.list 2>/dev/null
+      sudo -n apt-get update -y
+    fi
+    sudo -n apt-get install -y wezterm zsh starship zoxide fzf bat git ripgrep fd-find jq lazygit btop neovim || true
+  else
+    echo "Passwordless sudo is NOT available. Skipping APT installation."
+  fi
+# Try Pacman (Arch-based)
+elif command -v pacman >/dev/null 2>&1; then
+  if sudo -n true 2>/dev/null; then
+    echo "Running pacman install..."
+    sudo -n pacman -Syu --noconfirm
+    sudo -n pacman -S --noconfirm wezterm zsh starship zoxide fzf eza bat git ripgrep fd jq lazygit btop neovim || true
+  else
+    echo "Passwordless sudo is NOT available. Skipping Pacman installation."
+  fi
+fi
+
+# Try Homebrew (Linuxbrew)
+if command -v brew >/dev/null 2>&1; then
+  echo "Installing via Homebrew..."
+  brew install wezterm zsh starship zoxide fzf eza bat git ripgrep fd jq lazygit btop neovim zsh-autosuggestions zsh-syntax-highlighting || true
+fi
+
+# Fallback binary installation for eza
+if ! command -v eza >/dev/null 2>&1; then
+  echo "eza is missing. Fetching latest release from GitHub..."
+  mkdir -p "$HOME/.local/bin"
+  LATEST_EZA_TAG=$(curl -s https://api.github.com/repos/eza-community/eza/releases/latest | jq -r .tag_name 2>/dev/null)
+  if [ -n "$LATEST_EZA_TAG" ] && [ "$LATEST_EZA_TAG" != "null" ]; then
+    EZA_URL="https://github.com/eza-community/eza/releases/download/${LATEST_EZA_TAG}/eza_x86_64-unknown-linux-gnu.tar.gz"
+    echo "Downloading eza from $EZA_URL"
+    if curl -sL "$EZA_URL" -o /tmp/eza.tar.gz; then
+      tar -xzf /tmp/eza.tar.gz -C /tmp
+      mv /tmp/eza "$HOME/.local/bin/eza"
+      chmod +x "$HOME/.local/bin/eza"
+      rm -f /tmp/eza.tar.gz
+      echo "eza installed successfully to $HOME/.local/bin/eza"
+    else
+      echo "Failed to download eza."
+    fi
+  else
+    # Fallback to direct URL if API fails
+    EZA_URL="https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz"
+    echo "Downloading eza from fallback $EZA_URL"
+    if curl -sL "$EZA_URL" -o /tmp/eza.tar.gz; then
+      tar -xzf /tmp/eza.tar.gz -C /tmp
+      mv /tmp/eza "$HOME/.local/bin/eza"
+      chmod +x "$HOME/.local/bin/eza"
+      rm -f /tmp/eza.tar.gz
+      echo "eza installed successfully to $HOME/.local/bin/eza"
+    else
+      echo "Failed to download eza fallback."
+    fi
+  fi
+fi
+
+# Make sure zsh-autosuggestions and zsh-syntax-highlighting are cloned/installed if they are not in package manager
+mkdir -p "$HOME/.zsh"
+if [ ! -d "$HOME/.zsh/zsh-autosuggestions" ]; then
+  echo "Cloning zsh-autosuggestions..."
+  git clone https://github.com/zsh-users/zsh-autosuggestions "$HOME/.zsh/zsh-autosuggestions" 2>/dev/null || true
+fi
+if [ ! -d "$HOME/.zsh/zsh-syntax-highlighting" ]; then
+  echo "Cloning zsh-syntax-highlighting..."
+  git clone https://github.com/zsh-users/zsh-syntax-highlighting "$HOME/.zsh/zsh-syntax-highlighting" 2>/dev/null || true
+fi
+
+{{- end }}
