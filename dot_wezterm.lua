@@ -34,14 +34,16 @@ local function get_default_prog()
 end
 config.default_prog = get_default_prog()
 
--- Multiplexing with Unix Domains
-config.unix_domains = {
-  {
-    name = 'unix',
-  },
-}
--- Automatically connect to the local unix domain on startup to persist sessions
-config.default_gui_startup_args = { 'connect', 'unix' }
+-- Multiplexing with Unix Domains (disabled on Windows)
+if not wezterm.target_triple:find("windows") then
+  config.unix_domains = {
+    {
+      name = 'unix',
+    },
+  }
+  -- Automatically connect to the local unix domain on startup to persist sessions
+  config.default_gui_startup_args = { 'connect', 'unix' }
+end
 
 -- Leader key definition (Ctrl+A)
 config.leader = { key = 'a', mods = 'CTRL', timeout_milliseconds = 1000 }
