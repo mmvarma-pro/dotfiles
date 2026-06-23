@@ -17,7 +17,6 @@ config.window_padding = {
   bottom = 10,
 }
 config.window_decorations = wezterm.target_triple:find("darwin") and "INTEGRATED_BUTTONS | RESIZE" or "RESIZE"
-config.window_move_via_background = true
 
 -- Shell selection based on OS
 local function get_default_prog()
