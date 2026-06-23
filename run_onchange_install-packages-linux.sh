@@ -77,6 +77,11 @@ elif command -v apt-get >/dev/null; then
   # Install tools
   $SUDO apt-get install -y fzf bat zoxide eza || true
 
+  # Symlink batcat to bat if needed
+  if command -v batcat >/dev/null && ! command -v bat >/dev/null; then
+    mkdir -p "$HOME/.local/bin"
+    ln -sf "$(command -v batcat)" "$HOME/.local/bin/bat"
+  fi
   # If eza is not found, install a fallback
   if ! command -v eza >/dev/null; then
     echo "eza not found via package manager, installing latest release from GitHub..."

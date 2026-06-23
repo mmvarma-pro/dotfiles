@@ -16,20 +16,19 @@ $character"""
 
 add_newline = false
 
-palette = "tokyonight"
+palette = "nightowl"
 
-[palettes.tokyonight]
-bg = "#1a1b26"
-fg = "#a9b1d6"
-black = "#414868"
-red = "#f7768e"
-green = "#9ece6a"
-yellow = "#e0af68"
-blue = "#7aa2f7"
-magenta = "#bb9af7"
-cyan = "#7dcfff"
-white = "#c0caf5"
-
+[palettes.nightowl]
+bg = "#011627"
+fg = "#d6deeb"
+black = "#5f7e97"
+red = "#ef5350"
+green = "#addb67"
+yellow = "#ffcb8b"
+blue = "#82aaff"
+magenta = "#c792ea"
+cyan = "#21c7a8"
+white = "#ffffff"
 [character]
 success_symbol = "[➜](bold green) "
 error_symbol = "[➜](bold red) "

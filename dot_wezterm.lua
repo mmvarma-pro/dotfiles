@@ -2,11 +2,20 @@ local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
 
 -- Color scheme and aesthetics
-config.color_scheme = 'Tokyo Night'
+config.color_scheme = 'Night Owl (Gogh)'
 config.font = wezterm.font('JetBrains Mono')
 config.font_size = 11.0
-config.use_fancy_tab_bar = false
-config.hide_tab_bar_if_only_one_tab = false
+config.use_fancy_tab_bar = true
+config.hide_tab_bar_if_only_one_tab = true
+config.window_background_opacity = 0.85
+config.macos_window_background_blur = 20
+config.win32_system_backdrop = 'Acrylic'
+config.window_padding = {
+  left = 10,
+  right = 10,
+  top = 10,
+  bottom = 10,
+}
 
 -- Shell selection based on OS
 local function get_default_prog()
