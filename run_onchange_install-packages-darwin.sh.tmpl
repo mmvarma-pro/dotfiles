@@ -11,4 +11,20 @@ if [ ! -d "$HOME/powerlevel10k" ]; then
   echo "Cloning Powerlevel10k..."
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME/powerlevel10k" 2>/dev/null || true
 fi
+
+# Install MesloLGS NF fonts for Powerlevel10k
+FONT_DIR="$HOME/Library/Fonts"
+mkdir -p "$FONT_DIR"
+fonts=(
+  "MesloLGS NF Regular.ttf"
+  "MesloLGS NF Bold.ttf"
+  "MesloLGS NF Italic.ttf"
+  "MesloLGS NF Bold Italic.ttf"
+)
+echo "Installing MesloLGS NF fonts..."
+for font in "${fonts[@]}"; do
+  if [ ! -f "$FONT_DIR/$font" ]; then
+    curl -sL "https://github.com/romkatv/powerlevel10k-media/raw/master/${font// /%20}" -o "$FONT_DIR/$font" || true
+  fi
+done
 {{- end }}
