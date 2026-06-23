@@ -69,6 +69,7 @@ fi
 
 # Quick access
 alias zshrc='${=EDITOR:-vim} ~/.zshrc'
+alias j="z"
 
 # Search & disk usage
 alias dud='du -d 1 -h'

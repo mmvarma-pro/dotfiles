@@ -7,4 +7,8 @@ else
   echo "Homebrew not found. Please install Homebrew first."
   exit 1
 fi
+if [ ! -d "$HOME/powerlevel10k" ]; then
+  echo "Cloning Powerlevel10k..."
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$HOME/powerlevel10k" 2>/dev/null || true
+fi
 {{- end }}

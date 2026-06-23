@@ -1,3 +1,8 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # Zsh Configuration
 
 # History settings
@@ -34,10 +39,6 @@ if [ -d "/opt/homebrew/bin" ]; then
   export PATH="/opt/homebrew/bin:$PATH"
 fi
 
-# Initialize starship prompt
-if command -v starship >/dev/null; then
-  eval "$(starship init zsh)"
-fi
 
 # Initialize zoxide (smarter cd)
 if command -v zoxide >/dev/null; then
@@ -61,8 +62,8 @@ if command -v fzf >/dev/null; then
 fi
 
 # Load aliases and shortcuts
-if [ -f "$HOME/.aliasrc" ]; then
-  source "$HOME/.aliasrc"
+if [ -f "$HOME/.zsh/aliasrc" ]; then
+  source "$HOME/.zsh/aliasrc"
 fi
 if command -v zoxide >/dev/null; then
   alias cd="z"
@@ -96,3 +97,13 @@ if [ -n "$ZSH_AUTOSUGGEST_VERSION" ] || [ -f "/opt/homebrew/share/zsh-autosugges
   bindkey '^f' autosuggest-accept
   bindkey '^ ' autosuggest-accept
 fi
+
+# Load Powerlevel10k theme
+if [ -f "$HOME/powerlevel10k/powerlevel10k.zsh-theme" ]; then
+  source "$HOME/powerlevel10k/powerlevel10k.zsh-theme"
+elif [ -f "/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme" ]; then
+  source "/usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme"
+fi
+
+# Load p10k configuration if present
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
