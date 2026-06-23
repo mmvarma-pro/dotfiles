@@ -40,8 +40,6 @@ if not wezterm.target_triple:find("windows") then
       name = 'unix',
     },
   }
-  -- Automatically connect to the local unix domain on startup to persist sessions
-  config.default_gui_startup_args = { 'connect', 'unix' }
 end
 
 -- Leader key definition (Ctrl+A)
