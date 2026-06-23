@@ -53,22 +53,16 @@ elif command -v apt-get >/dev/null; then
   $SUDO apt-get update -y
   $SUDO apt-get install -y zsh git ripgrep jq btop neovim curl
 
-  # Install WezTerm via latest GitHub release deb
+  # Install WezTerm via official apt repository
   if ! command -v wezterm >/dev/null; then
-    echo "Installing WezTerm via .deb package from GitHub..."
-    # We download the deb package from github releases.
-    # Note: Ubuntu 22.04+ or Debian equivalent deb is downloaded.
-    WEZTERM_DEB_URL=$(curl -s https://api.github.com/repos/wez/wezterm/releases/latest | grep -Po '"browser_download_url": "\K[^"]*ubuntu22.04[a-zA-Z0-9.-]*\.deb' | head -n 1)
-    if [ -z "$WEZTERM_DEB_URL" ]; then
-      # Fallback to general ubuntu deb
-      WEZTERM_DEB_URL=$(curl -s https://api.github.com/repos/wez/wezterm/releases/latest | grep -Po '"browser_download_url": "\K[^"]*ubuntu[a-zA-Z0-9.-]*\.deb' | head -n 1)
-    fi
-    if [ -n "$WEZTERM_DEB_URL" ]; then
-      curl -Lo wezterm.deb "$WEZTERM_DEB_URL"
-      $SUDO apt-get install -y ./wezterm.deb
-      rm -f wezterm.deb
+    echo "Installing WezTerm via official apt repository..."
+    $SUDO rm -f /usr/share/keyrings/wezterm-fury.gpg
+    if curl -fsSL https://apt.fury.io/wez/gpg.key | $SUDO gpg --dearmor -o /usr/share/keyrings/wezterm-fury.gpg; then
+      echo 'deb [signed-by=/usr/share/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' | $SUDO tee /etc/apt/sources.list.d/wezterm.list >/dev/null
+      $SUDO apt-get update -y
+      $SUDO apt-get install -y wezterm
     else
-      echo "Could not find WezTerm deb package. Please install WezTerm manually."
+      echo "Failed to add WezTerm apt repository. Please install WezTerm manually."
     fi
   fi
 
