@@ -1,8 +1,8 @@
 # Starship Configuration with Tokyo Night Colors
 "$schema" = 'https://starship.rs/config-schema.json'
 
-format = "$character"
-right_format = """$directory$git_branch$git_status$nodejs$rust$golang$cmd_duration"""
+format = "$directory$git_branch$git_status$rust$nodejs$golang$cmd_duration$line_break$character"
+right_format = ""
 
 add_newline = false
 
