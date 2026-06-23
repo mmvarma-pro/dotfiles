@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "windows" -}}
 # PowerShell Profile Config
 
 # Setup UTF-8 encoding for output (critical for Nerd Fonts)
@@ -34,3 +35,4 @@ if (Get-Command btop -ErrorAction SilentlyContinue) {
 if (Get-Command nvim -ErrorAction SilentlyContinue) {
     Set-Alias -Name vim -Value nvim
 }
+{{- end -}}

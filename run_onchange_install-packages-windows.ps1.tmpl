@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "windows" -}}
 # OS Check
 if (-not ($IsWindows -or $env:OS -eq 'Windows_NT')) {
   exit 0
@@ -63,3 +64,4 @@ if (Get-Command scoop -ErrorAction SilentlyContinue) {
   }
   Write-Host "Please note that 'eza' is not available via Winget. You should install Scoop or download it manually."
 }
+{{- end -}}
