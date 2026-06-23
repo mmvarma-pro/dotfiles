@@ -3,7 +3,7 @@ local config = wezterm.config_builder()
 
 -- Color scheme and aesthetics
 config.color_scheme = 'Night Owl (Gogh)'
-config.font = wezterm.font('JetBrains Mono Nerd Font')
+config.font = wezterm.font('JetBrains Mono')
 config.font_size = 11.0
 config.use_fancy_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
