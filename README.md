@@ -77,3 +77,22 @@ This command will:
   ```powershell
   Set-ExecutionPolicy RemoteSigned -Scope LocalMachine
   ```
+
+---
+
+## Uninstallation / Full Reversal
+
+If you wish to completely remove the dotfiles setup, managed files, downloaded plugins, fonts, installed packages, and chezmoi itself, you can run the uninstallation command for your platform:
+
+### macOS & Linux (Unix)
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/mmvarma-pro/dotfiles/main/uninstall.sh | bash
+```
+
+### Windows
+
+```powershell
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/mmvarma-pro/dotfiles/main/uninstall.ps1 | Invoke-Expression
+```
+
