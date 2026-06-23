@@ -42,7 +42,10 @@ elif command -v apt-get >/dev/null; then
     if sudo -n true 2>/dev/null; then
       SUDO="sudo"
     else
-      echo "Warning: sudo requires a password, please install packages manually or run chezmoi as root/with passwordless sudo."
+      echo "Error: Passwordless sudo is not configured and you are not running as root."
+      echo "Please run 'sudo -v' before running 'chezmoi apply' to pre-authenticate sudo,"
+      echo "or run chezmoi as root."
+      exit 1
     fi
   fi
 
@@ -71,14 +74,34 @@ elif command -v apt-get >/dev/null; then
 
   # Install fd (named fd-find on Debian/Ubuntu) and symlink it to fd
   if $SUDO apt-get install -y fd-find; then
-    mkdir -p "$HOME/.local/bin"
-    ln -sf $(command -v fdfind) "$HOME/.local/bin/fd"
+    if command -v fdfind >/dev/null; then
+      mkdir -p "$HOME/.local/bin"
+      ln -sf "$(command -v fdfind)" "$HOME/.local/bin/fd"
+    fi
   fi
 
   # Install tools
   $SUDO apt-get install -y fzf bat zoxide eza || true
 
-  # If eza is not found, install a fallback or check if it exists
+  # If eza is not found, install a fallback
+  if ! command -v eza >/dev/null; then
+    echo "eza not found via package manager, installing latest release from GitHub..."
+    EZA_VERSION=$(curl -s "https://api.github.com/repos/eza-community/eza/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
+    if [ -n "$EZA_VERSION" ]; then
+      mkdir -p "$HOME/.local/bin"
+      TEMP_DIR=$(mktemp -d)
+      if curl -Lo "$TEMP_DIR/eza.tar.gz" "https://github.com/eza-community/eza/releases/latest/download/eza_x86_64-unknown-linux-gnu.tar.gz"; then
+        tar xzf "$TEMP_DIR/eza.tar.gz" -C "$TEMP_DIR"
+        if [ -f "$TEMP_DIR/eza" ]; then
+          install "$TEMP_DIR/eza" "$HOME/.local/bin/eza"
+        elif [ -f "$TEMP_DIR/bin/eza" ]; then
+          install "$TEMP_DIR/bin/eza" "$HOME/.local/bin/eza"
+        fi
+      fi
+      rm -rf "$TEMP_DIR"
+    fi
+  fi
+  # Install starship if not found
   if ! command -v starship >/dev/null; then
     echo "Installing starship prompt..."
     curl -sS https://starship.rs/install.sh | sh -s -- -y
