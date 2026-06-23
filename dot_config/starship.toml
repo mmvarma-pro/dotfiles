@@ -49,7 +49,7 @@ format = "on [$symbol$branch]($style) "
 style = "bold red"
 format = "[[[$all_status$ahead_behind]($style)]($style) ]"
 
-[node]
+[nodejs]
 symbol = " "
 style = "bold green"
 format = "via [$symbol($version)]($style) "
