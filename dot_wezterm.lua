@@ -1,5 +1,6 @@
 local wezterm = require 'wezterm'
 local config = wezterm.config_builder()
+config.front_end = "WebGpu"
 
 -- Color scheme and aesthetics
 config.color_scheme = 'Night Owl (Gogh)'

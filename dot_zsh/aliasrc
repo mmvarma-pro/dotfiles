@@ -25,16 +25,16 @@ ex ()
 
 # Modern CLI overrides using eza, bat, ripgrep, lazygit, btop, nvim
 if command -v eza >/dev/null 2>&1; then
-  alias ls="eza --icons"
-  alias l="eza -lFh --icons"
-  alias la="eza -lAFh --icons"
-  alias ll="eza -lh --icons"
-  alias lr="eza -tRFh --icons"
-  alias lt="eza -ltFh --icons"
-  alias ldot="eza -ld --icons .*"
-  alias lS="eza -1FSsh --icons"
-  alias lart="eza -1Fcart --icons"
-  alias lrt="eza -1Fcrt --icons"
+  alias ls="eza --icons --group-directories-first --git"
+  alias l="eza -lFh --icons --group-directories-first --git"
+  alias la="eza -lAFh --icons --group-directories-first --git"
+  alias ll="eza -lh --icons --group-directories-first --git"
+  alias lr="eza -tRFh --icons --group-directories-first"
+  alias lt="eza -ltFh --icons --group-directories-first"
+  alias ldot="eza -ld --icons --group-directories-first .*"
+  alias lS="eza -1FSsh --icons --group-directories-first"
+  alias lart="eza -1Fcart --icons --group-directories-first"
+  alias lrt="eza -1Fcrt --icons --group-directories-first"
 else
   alias ls="ls --color=auto"
   alias l="ls -lFh"
@@ -45,7 +45,7 @@ else
 fi
 
 if command -v bat >/dev/null 2>&1; then
-  alias cat="bat"
+  alias cat="bat -pp"
 fi
 
 if command -v rg >/dev/null 2>&1; then

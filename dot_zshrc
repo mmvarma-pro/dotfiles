@@ -81,16 +81,6 @@ elif [ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
   source "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh"
 fi
 
-# Source zsh-syntax-highlighting if available
-if [ -f "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-elif [ -f "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
-  source "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-fi
 
 # Bind keys to accept auto-suggestions (Ctrl+F like Fish, Ctrl+Space like Chris Titus)
 if [ -n "$ZSH_AUTOSUGGEST_VERSION" ] || [ -f "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
@@ -107,3 +97,14 @@ fi
 
 # Load p10k configuration if present
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Source zsh-syntax-highlighting if available (MUST be at the bottom)
+if [ -f "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "/opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [ -f "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [ -f "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+elif [ -f "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+  source "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
