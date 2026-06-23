@@ -1,0 +1,69 @@
+# Starship Configuration with Tokyo Night Colors
+"$schema" = 'https://starship.rs/config-schema.json'
+
+format = """
+$username\
+$hostname\
+$directory\
+$git_branch\
+$git_status\
+$rust\
+$nodejs\
+$golang\
+$cmd_duration\
+$line_break\
+$character"""
+
+add_newline = false
+
+palette = "tokyonight"
+
+[palettes.tokyonight]
+bg = "#1a1b26"
+fg = "#a9b1d6"
+black = "#414868"
+red = "#f7768e"
+green = "#9ece6a"
+yellow = "#e0af68"
+blue = "#7aa2f7"
+magenta = "#bb9af7"
+cyan = "#7dcfff"
+white = "#c0caf5"
+
+[character]
+success_symbol = "[➜](bold green) "
+error_symbol = "[➜](bold red) "
+
+[directory]
+style = "bold cyan"
+format = "[$path]($style) "
+truncation_length = 3
+truncation_symbol = "…/"
+
+[git_branch]
+symbol = " "
+style = "bold magenta"
+format = "on [$symbol$branch]($style) "
+
+[git_status]
+style = "bold red"
+format = "[[[$all_status$ahead_behind]($style)]($style) ]"
+
+[node]
+symbol = " "
+style = "bold green"
+format = "via [$symbol($version)]($style) "
+
+[rust]
+symbol = " "
+style = "bold red"
+format = "via [$symbol($version)]($style) "
+
+[golang]
+symbol = " "
+style = "bold blue"
+format = "via [$symbol($version)]($style) "
+
+[cmd_duration]
+style = "bold yellow"
+format = "took [$duration]($style) "
