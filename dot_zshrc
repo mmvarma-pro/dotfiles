@@ -60,17 +60,13 @@ if command -v fzf >/dev/null; then
   fi
 fi
 
-# Aliases
-alias ls="eza --icons"
-alias ll="eza -lh --icons"
-alias la="eza -la --icons"
-alias cat="bat"
+# Load aliases and shortcuts
+if [ -f "$HOME/.aliasrc" ]; then
+  source "$HOME/.aliasrc"
+fi
 if command -v zoxide >/dev/null; then
   alias cd="z"
 fi
-alias git-ui="lazygit"
-alias top="btop"
-alias vim="nvim"
 
 # Plugins (Auto-suggestions and Syntax Highlighting)
 # Source zsh-autosuggestions if available
@@ -95,7 +91,8 @@ elif [ -f "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; th
   source "$HOME/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
 
-# Bind Ctrl+F to accept auto-suggestions (like Fish shell)
+# Bind keys to accept auto-suggestions (Ctrl+F like Fish, Ctrl+Space like Chris Titus)
 if [ -n "$ZSH_AUTOSUGGEST_VERSION" ] || [ -f "/opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "/usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "/usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] || [ -f "$HOME/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
   bindkey '^f' autosuggest-accept
+  bindkey '^ ' autosuggest-accept
 fi
